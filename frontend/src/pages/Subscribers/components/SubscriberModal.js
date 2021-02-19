@@ -87,6 +87,7 @@ class SubscriberModal extends Component {
     required: [
       "plmnID",
       "ueId",
+      "authenticationManagementField",
       "authenticationMethod",
       "K",
       "OPOPcSelect",
@@ -116,6 +117,12 @@ class SubscriberModal extends Component {
         title: "K",
         pattern: "^[A-Fa-f0-9]{32}$",
         default: "8baf473f2f8fd09487cccbd7097c6862",
+      },
+      authenticationManagementField: {
+        type: "string",
+        title: "Authentication Management Field (AMF)",
+        pattern: "^[A-Fa-f0-9]{4}$",
+        default: "8000",
       },
       OPOPcSelect: {
         type: "string",
@@ -326,6 +333,7 @@ class SubscriberModal extends Component {
         let formData = {
           plmnID: subscriber['plmnID'],
           ueId: subscriber['ueId'].replace("imsi-", ""),
+          authenticationManagementField: subscriber['authenticationManagementField'],
           authenticationMethod: subscriber['AuthenticationSubscription']["authenticationMethod"],
           K: subscriber['AuthenticationSubscription']["permanentKey"]["permanentKeyValue"],
           OPOPcSelect: isOp ? "OP" : "OPc",
@@ -381,7 +389,7 @@ class SubscriberModal extends Component {
       "plmnID": formData["plmnID"], // Change required
       "ueId": "imsi-" + formData["ueId"], // Change required
       "AuthenticationSubscription": {
-        "authenticationManagementField": "8000",
+        "authenticationManagementField": formData["authenticationManagementField"],
         "authenticationMethod": formData["authenticationMethod"], // "5G_AKA", "EAP_AKA_PRIME"
         "milenage": {
           "op": {
